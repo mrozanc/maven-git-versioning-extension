@@ -46,7 +46,6 @@ import static java.lang.Math.*;
 import static java.time.format.DateTimeFormatter.ISO_INSTANT;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
-import static java.util.Objects.requireNonNullElse;
 import static java.util.stream.Collectors.*;
 import static me.qoomon.gitversioning.commons.GitRefType.*;
 import static me.qoomon.gitversioning.commons.StringUtil.*;
@@ -616,7 +615,7 @@ public class GitVersioningModelProcessor implements ModelProcessor {
                                     }
                                     // prepend git versioning plugin to unCheckedPluginList
                                     unCheckedPluginList.setValue(gitVersioningPlugin.getKey() + ","
-                                            + Objects.requireNonNullElse(unCheckedPluginList.getValue(), "")
+                                            + Optional.ofNullable(unCheckedPluginList.getValue()).orElse("")
                                     );
                                 }
                             }
@@ -842,18 +841,18 @@ public class GitVersioningModelProcessor implements ModelProcessor {
 
         final Lazy<Matcher> versionComponents = Lazy.by(() -> matchVersion(projectVersion));
 
-        placeholderMap.put("version.core", Lazy.by(() -> requireNonNullElse(versionComponents.get().group("core"), "0.0.0")));
+        placeholderMap.put("version.core", Lazy.by(() -> Optional.ofNullable(versionComponents.get().group("core")).orElse("0.0.0")));
 
-        placeholderMap.put("version.major", Lazy.by(() -> requireNonNullElse(versionComponents.get().group("major"), "0")));
+        placeholderMap.put("version.major", Lazy.by(() -> Optional.ofNullable(versionComponents.get().group("major")).orElse("0")));
         placeholderMap.put("version.major.next", Lazy.by(() -> increase(placeholderMap.get("version.major").get(), 1)));
 
-        placeholderMap.put("version.minor", Lazy.by(() -> requireNonNullElse(versionComponents.get().group("minor"), "0")));
+        placeholderMap.put("version.minor", Lazy.by(() -> Optional.ofNullable(versionComponents.get().group("minor")).orElse("0")));
         placeholderMap.put("version.minor.next", Lazy.by(() -> increase(placeholderMap.get("version.minor").get(), 1)));
 
-        placeholderMap.put("version.patch", Lazy.by(() -> requireNonNullElse(versionComponents.get().group("patch"), "0")));
+        placeholderMap.put("version.patch", Lazy.by(() -> Optional.ofNullable(versionComponents.get().group("patch")).orElse("0")));
         placeholderMap.put("version.patch.next", Lazy.by(() -> increase(placeholderMap.get("version.patch").get(), 1)));
 
-        placeholderMap.put("version.label", Lazy.by(() -> requireNonNullElse(versionComponents.get().group("label"), "")));
+        placeholderMap.put("version.label", Lazy.by(() -> Optional.ofNullable(versionComponents.get().group("label")).orElse("")));
         placeholderMap.put("version.label.prefixed", Lazy.by(() -> {
             String label = placeholderMap.get("version.label").get();
             return !label.isEmpty() ? "-" + label : "";
@@ -869,7 +868,7 @@ public class GitVersioningModelProcessor implements ModelProcessor {
                 final String groupName = patternGroup.getKey();
                 final String value = patternGroup.getValue() != null ? patternGroup.getValue() : "";
 
-                final var placeholderKey = "version." + groupName;
+                final String placeholderKey = "version." + groupName;
                 // ensure no placeholder overwrites
                 if (placeholderMap.containsKey(placeholderKey)) {
                     throw new IllegalArgumentException("project version pattern capture group can not be named '" + groupName + "', because this would overwrite extension placeholder ${" + placeholderKey + "}");
@@ -926,7 +925,7 @@ public class GitVersioningModelProcessor implements ModelProcessor {
                 final String groupName = patternGroup.getKey();
                 final String value = patternGroup.getValue() != null ? patternGroup.getValue() : "";
 
-                final var placeholderKey = "ref." + groupName;
+                final String placeholderKey = "ref." + groupName;
                 // ensure no placeholder overwrites
                 if (placeholderMap.containsKey(placeholderKey)) {
                     throw new IllegalArgumentException("ref pattern capture group can not be named '" + groupName + "', because this would overwrite extension placeholder ${" + placeholderKey + "}");
@@ -949,20 +948,20 @@ public class GitVersioningModelProcessor implements ModelProcessor {
 
         final Lazy<Matcher> descriptionTagVersionMatcher = Lazy.by(() -> matchVersion(descriptionTag.get()));
 
-        placeholderMap.put("describe.tag.version", Lazy.by(() -> requireNonNullElse(descriptionTagVersionMatcher.get().group("version"), "0.0.0")));
+        placeholderMap.put("describe.tag.version", Lazy.by(() -> Optional.ofNullable(descriptionTagVersionMatcher.get().group("version")).orElse("0.0.0")));
 
-        placeholderMap.put("describe.tag.version.core", Lazy.by(() -> requireNonNullElse(descriptionTagVersionMatcher.get().group("core"), "0")));
+        placeholderMap.put("describe.tag.version.core", Lazy.by(() -> Optional.ofNullable(descriptionTagVersionMatcher.get().group("core")).orElse("0")));
 
-        placeholderMap.put("describe.tag.version.major", Lazy.by(() -> requireNonNullElse(descriptionTagVersionMatcher.get().group("major"), "0")));
+        placeholderMap.put("describe.tag.version.major", Lazy.by(() -> Optional.ofNullable(descriptionTagVersionMatcher.get().group("major")).orElse("0")));
         placeholderMap.put("describe.tag.version.major.next", Lazy.by(() -> increase(placeholderMap.get("describe.tag.version.major").get(), 1)));
 
-        placeholderMap.put("describe.tag.version.minor", Lazy.by(() -> requireNonNullElse(descriptionTagVersionMatcher.get().group("minor"), "0")));
+        placeholderMap.put("describe.tag.version.minor", Lazy.by(() -> Optional.ofNullable(descriptionTagVersionMatcher.get().group("minor")).orElse("0")));
         placeholderMap.put("describe.tag.version.minor.next", Lazy.by(() -> increase(placeholderMap.get("describe.tag.version.minor").get(), 1)));
 
-        placeholderMap.put("describe.tag.version.patch", Lazy.by(() -> requireNonNullElse(descriptionTagVersionMatcher.get().group("patch"), "0")));
+        placeholderMap.put("describe.tag.version.patch", Lazy.by(() -> Optional.ofNullable(descriptionTagVersionMatcher.get().group("patch")).orElse("0")));
         placeholderMap.put("describe.tag.version.patch.next", Lazy.by(() -> increase(placeholderMap.get("describe.tag.version.patch").get(), 1)));
 
-        placeholderMap.put("describe.tag.version.label", Lazy.by(() -> requireNonNullElse(descriptionTagVersionMatcher.get().group("label"), "")));
+        placeholderMap.put("describe.tag.version.label", Lazy.by(() -> Optional.ofNullable(descriptionTagVersionMatcher.get().group("label")).orElse("")));
         placeholderMap.put("describe.tag.version.label.next", Lazy.by(() -> increase(placeholderMap.get("describe.tag.version.label").get(), 1)));
 
         final Lazy<Integer> descriptionDistance = Lazy.by(() -> description.get().getDistance());
@@ -979,7 +978,7 @@ public class GitVersioningModelProcessor implements ModelProcessor {
         final Lazy<Map<String, String>> describeTagPatternValues = Lazy.by(
                 () -> patternGroupValues(gitSituation.getDescribeTagPattern(), descriptionTag.get()));
         for (String groupName : patternGroups(gitSituation.getDescribeTagPattern())) {
-            final var placeholderKey = "describe.tag." + groupName;
+            final String placeholderKey = "describe.tag." + groupName;
             // ensure no placeholder overwrites
             if (placeholderMap.containsKey(placeholderKey)) {
                 throw new IllegalArgumentException("describe tag pattern capture group can not be named '" + groupName + "', because this would overwrite extension placeholder ${" + placeholderKey + "}");

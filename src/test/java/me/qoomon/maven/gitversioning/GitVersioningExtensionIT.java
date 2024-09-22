@@ -242,7 +242,7 @@ class GitVersioningExtensionIT {
                 refs.list.add(releaseBranchRef);
             }});
 
-            verifyOutputVersion("2.3.0-rc.2-SNAPSHOT");
+            verifyOutputVersion("2.3.0-rc.1-SNAPSHOT");
 
             // When
             git.tag().setAnnotated(true).setName("release-marker-2.3").call();

@@ -5,7 +5,7 @@
         <maven>3.6.4</maven>
     </prerequisites>
 
-    <groupId>me.qoomon</groupId>
+    <groupId>fr.rozanc.maven</groupId>
     <artifactId>maven-git-versioning-extension</artifactId>
     <version>9.8.2-java8</version>
     <packaging>maven-plugin</packaging>
@@ -15,8 +15,8 @@
     <url>https://github.com/qoomon/maven-git-versioning-extension</url>
 
     <scm>
-        <url>https://github.com/qoomon/maven-git-versioning-extension.git</url>
-        <connection>scm:git:https://github.com/qoomon/maven-git-versioning-extension.git</connection>
+        <url>https://github.com/mrozanc/maven-git-versioning-extension.git</url>
+        <connection>scm:git:https://github.com/mrozanc/maven-git-versioning-extension.git</connection>
     </scm>
 
     <licenses>

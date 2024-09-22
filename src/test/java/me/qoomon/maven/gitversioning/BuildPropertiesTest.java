@@ -20,7 +20,7 @@ class BuildPropertiesTest {
         String projectVersion = BuildProperties.projectVersion();
 
         // THEN
-        assertThat(projectGroupId).isEqualTo("me.qoomon");
+        assertThat(projectGroupId).isEqualTo("fr.rozanc.maven");
         assertThat(projectArtifactId).isEqualTo("maven-git-versioning-extension");
         assertThat(projectVersion).isNotEmpty();
     }

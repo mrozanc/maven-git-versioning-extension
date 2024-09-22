@@ -1061,6 +1061,9 @@ public class GitVersioningModelProcessor implements ModelProcessor {
             if (patchDescription.describeTagFirstParent == null) {
                 patchDescription.describeTagFirstParent = config.describeTagFirstParent;
             }
+            if (patchDescription.describeTagMaxDepth == null) {
+                patchDescription.describeTagMaxDepth = config.describeTagMaxDepth;
+            }
             if (patchDescription.updatePom == null) {
                 patchDescription.updatePom = config.updatePom;
             }

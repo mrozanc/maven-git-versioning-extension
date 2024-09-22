@@ -48,7 +48,7 @@ public class Configuration {
 
     public Boolean describeTagFirstParent = true;
 
-    public int describeTagMaxDepth = Integer.MAX_VALUE;
+    public Integer describeTagMaxDepth = Integer.MAX_VALUE;
 
     public Boolean updatePom = false;
 
@@ -67,7 +67,7 @@ public class Configuration {
         @JsonDeserialize(using = IgnoreWhitespaceDeserializer.class)
         public String describeTagPattern;
 
-        public int describeTagMaxDepth = Integer.MAX_VALUE;
+        public Integer describeTagMaxDepth;
 
         @JsonDeserialize(using = IgnoreWhitespaceDeserializer.class)
         public String version;

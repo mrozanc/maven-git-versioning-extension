@@ -237,7 +237,7 @@ public class GitVersioningModelProcessor implements ModelProcessor {
         if (patchDescription.describeTagPattern != null && !patchDescription.describeTagPattern.equals(".*")) {
             logger.info("  describeTagPattern: {}", patchDescription.describeTagPattern);
             gitSituation.setRawDescribeTagPattern(patchDescription.describeTagPattern);
-            gitSituation.setDescribeTagPattern(preProcessDescribeTagPattern(patchDescription.describeTagPattern, placeholderMapSupplier));
+            gitSituation.setDescribeTagPattern(preProcessDescribeTagPattern(patchDescription.describeTagPattern, placeholderMapSupplier), patchDescription.describeTagMaxDepth);
         }
         if (patchDescription.describeTagFirstParent != null) {
             logger.info("  describeTagFirstParent: {}", patchDescription.describeTagFirstParent);

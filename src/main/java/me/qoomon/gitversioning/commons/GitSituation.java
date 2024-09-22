@@ -38,7 +38,7 @@ public class GitSituation {
 
     private boolean firstParent = true;
 
-    private Supplier<GitDescription> description = Lazy.by(this::describe);
+    private Supplier<GitDescription> description = Lazy.by(() -> this.describe(Integer.MAX_VALUE));
 
     public GitSituation(Repository repository) throws IOException {
         this.repository = repository;
@@ -138,9 +138,9 @@ public class GitSituation {
         this.rawDescribeTagPattern = requireNonNull(rawDescribeTagPattern);
     }
 
-    public void setDescribeTagPattern(Supplier<Pattern> describeTagPattern) {
+    public void setDescribeTagPattern(Supplier<Pattern> describeTagPattern, int describeTagMaxDepth) {
         this.describeTagPattern = requireNonNull(describeTagPattern);
-        this.description = Lazy.by(this::describe);
+        this.description = Lazy.by(() -> this.describe(describeTagMaxDepth));
     }
 
     public Pattern getDescribeTagPattern() {
@@ -179,7 +179,7 @@ public class GitSituation {
         return GitUtil.status(repository).isClean();
     }
 
-    private GitDescription describe() throws IOException {
-        return GitUtil.describe(head, describeTagPattern.get(), repository, firstParent);
+    private GitDescription describe(int maxDepth) throws IOException {
+        return GitUtil.describe(head, describeTagPattern.get(), repository, firstParent, maxDepth);
     }
 }

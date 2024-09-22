@@ -205,7 +205,7 @@ class GitUtilTest {
         // given
         Git git = Git.init().setInitialBranch(MASTER).setDirectory(tempDir.toFile()).call();
 
-        final var softly = new SoftAssertions();
+        final SoftAssertions softly = new SoftAssertions();
         for (int i = 0; i < 3; ++i) {
             GitDescription description = GitUtil.describe(head(git), Pattern.compile("v.+"), git.getRepository(), true);
             softly.assertThat(description.getDistanceOrZero()).isZero();

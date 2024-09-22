@@ -1,5 +1,6 @@
 package me.qoomon.gitversioning.commons;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
@@ -28,10 +29,10 @@ public final class StringUtil {
         functions.put("lowercase", str -> str.toLowerCase(Locale.ROOT));
         functions.put("word", str -> str.replaceAll("\\W+", "_").replaceAll("_{2,}", "_"));
         functions.put("word+dot", str -> str.replaceAll("[^\\w.]+", "_").replaceAll("_{2,}", "_"));
-        FUNCTIONS = functions.entrySet().stream().collect(Collectors.toUnmodifiableMap(
+        FUNCTIONS = Collections.unmodifiableMap(functions.entrySet().stream().collect(Collectors.toMap(
                 Map.Entry::getKey,
                 e -> str -> str == null ? null : e.getValue().apply(str))
-        );
+        ));
         final String functionsAlternatives = FUNCTIONS.keySet().stream().map(Pattern::quote).collect(Collectors.joining("|:", "(?<functions>(?::", ")+)?"));
         PLACEHOLDER_PATTERN = Pattern.compile("\\$\\{(?<key>[^}:]+)(?::(?<modifier>[-+])(?<value>(?:::|[^:}])*))?" + functionsAlternatives + "}");
     }
@@ -124,18 +125,26 @@ public final class StringUtil {
 
     public static String next(String value) {
         final Matcher matcher = END_NUMBERS.matcher(value);
-        if (matcher.find()) {
-            return matcher.replaceAll(matchResult -> String.valueOf(Long.parseLong(matchResult.group()) + 1L));
+        final StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            matcher.appendReplacement(sb, String.valueOf(Long.parseLong(matcher.group()) + 1L));
         }
-        return value + ".1";
+        matcher.appendTail(sb);
+        final String result = sb.toString();
+        if (value.equals(result)) {
+            return value + ".1";
+        }
+        return result;
     }
 
     public static String incrementLast(String value) {
         final Matcher matcher = LAST_NUMBERS.matcher(value);
-        if (matcher.find()) {
-            return matcher.replaceFirst(matchResult -> String.valueOf(Long.parseLong(matchResult.group()) + 1L));
+        final StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            matcher.appendReplacement(sb, String.valueOf(Long.parseLong(matcher.group()) + 1L));
         }
-        return value;
+        matcher.appendTail(sb);
+        return sb.toString();
     }
 
     private StringUtil() {

@@ -1103,7 +1103,7 @@ public class GitVersioningModelProcessor implements ModelProcessor {
         final Matcher placeHolderMatcher = PATTERN_PLACEHOLDERS_EXPRESSION.matcher(describeTagPattern);
         return Lazy.by(() -> {
             placeHolderMatcher.reset();
-            final StringBuilder sb = new StringBuilder();
+            final StringBuffer sb = new StringBuffer();
             while (placeHolderMatcher.find()) {
                 final String capture = placeHolderMatcher.group(1);
                 if (placeholderMapSupplier.get().containsKey(capture)) {

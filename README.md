@@ -37,7 +37,7 @@ create or update `${rootProjectDir}/.mvn/extensions.xml` file
             xsi:schemaLocation="http://maven.apache.org/EXTENSIONS/1.0.0 http://maven.apache.org/xsd/core-extensions-1.0.0.xsd">
 
     <extension>
-        <groupId>me.qoomon</groupId>
+        <groupId>fr.rozanc.maven</groupId>
         <artifactId>maven-git-versioning-extension</artifactId>
         <version>9.8.1</version>
     </extension>
@@ -166,7 +166,7 @@ You can configure the version and properties adjustments for specific branches a
    ```xml
    <relatedProjects>
        <project>
-           <groupId>me.qoomon</groupId>
+           <groupId>fr.rozanc.maven</groupId>
            <artifactId>base</artifactId>
        </project>
    </relatedProjects>

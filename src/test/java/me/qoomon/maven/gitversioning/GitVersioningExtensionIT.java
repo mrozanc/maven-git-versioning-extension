@@ -1052,7 +1052,7 @@ class GitVersioningExtensionIT {
         return Files.write(mvnDotDir.resolve("extensions.xml"), ("" +
                 "<extensions>\n" +
                 "  <extension>\n" +
-                "    <groupId>me.qoomon</groupId>\n" +
+                "    <groupId>fr.rozanc.maven</groupId>\n" +
                 "    <artifactId>maven-git-versioning-extension</artifactId>\n" +
                 "    <version>LATEST</version>\n" +
                 "  </extension>\n" +

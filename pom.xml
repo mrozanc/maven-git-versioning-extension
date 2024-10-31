@@ -7,7 +7,7 @@
 
     <groupId>fr.rozanc.maven</groupId>
     <artifactId>maven-git-versioning-extension</artifactId>
-    <version>9.8.2-java8.1</version>
+    <version>9.8.2-java8.2</version>
     <packaging>maven-plugin</packaging>
 
     <name>Maven Git Versioning Extension</name>
@@ -68,8 +68,7 @@
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-core</artifactId>
-            <!-- BREAKING CHANGE in https://maven.apache.org/docs/3.9.8/release-notes.html -->
-            <version>3.9.7</version>
+            <version>3.9.9</version>
             <scope>provided</scope>
         </dependency>
 

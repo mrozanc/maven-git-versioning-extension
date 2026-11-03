@@ -32,11 +32,15 @@ public class GitSituation {
 
     private final Supplier<Boolean> clean = Lazy.by(this::clean);
 
-    private Pattern describeTagPattern = Pattern.compile(".*");
+    private Supplier<Pattern> describeTagPattern = Lazy.by(() -> Pattern.compile(".*"));
+
+    private String rawDescribeTagPattern = ".*";
+
+    private Integer describeTagMaxDepth = Integer.MAX_VALUE;
 
     private boolean firstParent = true;
 
-    private Supplier<GitDescription> description = Lazy.by(() -> this.describe(Integer.MAX_VALUE));
+    private Supplier<GitDescription> description = Lazy.by(this::describe);
 
     public GitSituation(Repository repository) throws IOException {
         this.repository = repository;
@@ -121,13 +125,22 @@ public class GitSituation {
         return clean.get();
     }
 
-    public void setDescribeTagPattern(Pattern describeTagPattern, Integer describeTagMaxDepth) {
+    public String getRawDescribeTagPattern() {
+        return rawDescribeTagPattern;
+    }
+
+    public void setRawDescribeTagPattern(String rawDescribeTagPattern) {
+        this.rawDescribeTagPattern = requireNonNull(rawDescribeTagPattern);
+    }
+
+    public void setDescribeTagPattern(Supplier<Pattern> describeTagPattern, Integer describeTagMaxDepth) {
         this.describeTagPattern = requireNonNull(describeTagPattern);
-        this.description = Lazy.by(() -> this.describe(describeTagMaxDepth));
+        this.describeTagMaxDepth = describeTagMaxDepth;
+        this.description = Lazy.by(this::describe);
     }
 
     public Pattern getDescribeTagPattern() {
-        return describeTagPattern;
+        return describeTagPattern.get();
     }
 
     public boolean isFirstParent() {
@@ -136,6 +149,7 @@ public class GitSituation {
 
     public void setFirstParent(boolean firstParent) {
         this.firstParent = firstParent;
+        this.description = Lazy.by(this::describe);
     }
 
     public GitDescription getDescription() {
@@ -162,7 +176,7 @@ public class GitSituation {
         return GitUtil.status(repository).isClean();
     }
 
-    private GitDescription describe(Integer maxDepth) throws IOException {
-        return GitUtil.describe(head, describeTagPattern, repository, firstParent, maxDepth);
+    private GitDescription describe() throws IOException {
+        return GitUtil.describe(head, describeTagPattern.get(), repository, firstParent, describeTagMaxDepth);
     }
 }

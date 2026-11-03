@@ -48,14 +48,14 @@ public class Configuration {
 
     public Boolean describeTagFirstParent = true;
 
+    public Integer describeTagMaxDepth = Integer.MAX_VALUE;
+
     public Pattern describeTagPattern() {
         if(describeTagPattern == null) {
             return null;
         }
         return Pattern.compile(describeTagPattern);
     }
-
-    public Integer describeTagMaxDepth = Integer.MAX_VALUE;
 
     public Boolean updatePom = false;
 
@@ -74,14 +74,14 @@ public class Configuration {
         @JsonDeserialize(using = IgnoreWhitespaceDeserializer.class)
         public String describeTagPattern;
 
+        public Integer describeTagMaxDepth;
+
         public Pattern describeTagPattern() {
             if(describeTagPattern == null) {
                 return null;
             }
             return Pattern.compile(describeTagPattern);
         }
-
-        public Integer describeTagMaxDepth;
 
         @JsonDeserialize(using = IgnoreWhitespaceDeserializer.class)
         public String version;

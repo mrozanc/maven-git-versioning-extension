@@ -2,6 +2,7 @@ package me.qoomon.maven.gitversioning;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.Properties;
 
 public final class BuildProperties {
@@ -12,7 +13,7 @@ public final class BuildProperties {
 
     private static Properties loadProperties() {
         Properties properties = new Properties();
-        try (InputStream inputStream = BuildProperties.class.getClassLoader().getResource(FILE_PATH).openStream()) {
+        try (InputStream inputStream = Objects.requireNonNull(BuildProperties.class.getClassLoader().getResource(FILE_PATH)).openStream()) {
             properties.load(inputStream);
         } catch (IOException e) {
             throw new RuntimeException(e);

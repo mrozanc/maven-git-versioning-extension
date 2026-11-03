@@ -228,9 +228,9 @@ public class GitVersioningModelProcessor implements ModelProcessor {
             return;
         }
 
-        logger.info("matching ref: {} - {}", gitVersionDetails.getRefType().name(), gitVersionDetails.getRefName());
-        final RefPatchDescription patchDescription = gitVersionDetails.getPatchDescription();
-        logger.info("ref configuration: {} - pattern: {}", gitVersionDetails.getRefType().name(), patchDescription.pattern);
+        logger.info("matching ref: {} - {}", gitVersionDetails.refType().name(), gitVersionDetails.refName());
+        final RefPatchDescription patchDescription = gitVersionDetails.patchDescription();
+        logger.info("ref configuration: {} - pattern: {}", gitVersionDetails.refType().name(), patchDescription.pattern);
 
         final Supplier<Map<String, Supplier<String>>> placeholderMapSupplier =
                 Lazy.by(() -> generateGlobalFormatPlaceholderMap(gitSituation, gitVersionDetails, mavenSession));
@@ -328,7 +328,7 @@ public class GitVersioningModelProcessor implements ModelProcessor {
             logger.info(projectLogHeader(projectGAV));
         }
 
-        updateModel(projectModel, gitVersionDetails.getPatchDescription());
+        updateModel(projectModel, gitVersionDetails.patchDescription());
 
         // related project pom resolved from a repository (e.g. module excluded from reactor),
         // there is no local project pom to generate a git versioned pom file from
@@ -592,9 +592,9 @@ public class GitVersioningModelProcessor implements ModelProcessor {
             projectModel.addProperty("git.worktree", gitSituation.getRootDirectory().getAbsolutePath());
 
         if (!projectProperties.contains("git.commit"))
-            projectModel.addProperty("git.commit", gitVersionDetails.getCommit());
+            projectModel.addProperty("git.commit", gitVersionDetails.commit());
         if (!projectProperties.contains("git.commit.short"))
-            projectModel.addProperty("git.commit.short", gitVersionDetails.getCommit().substring(0, 7));
+            projectModel.addProperty("git.commit.short", gitVersionDetails.commit().substring(0, 7));
 
         final ZonedDateTime headCommitDateTime = gitSituation.getTimestamp();
         if (!projectProperties.contains("git.commit.timestamp"))
@@ -603,7 +603,7 @@ public class GitVersioningModelProcessor implements ModelProcessor {
             projectModel.addProperty("git.commit.timestamp.datetime", headCommitDateTime.toEpochSecond() > 0
                     ? headCommitDateTime.format(ISO_INSTANT) : "0000-00-00T00:00:00Z");
 
-        final String refName = gitVersionDetails.getRefName();
+        final String refName = gitVersionDetails.refName();
         if (!projectProperties.contains("git.ref"))
             projectModel.addProperty("git.ref", refName);
         if (!projectProperties.contains("git.ref.slug"))
@@ -965,12 +965,12 @@ public class GitVersioningModelProcessor implements ModelProcessor {
         placeholderMap.put("build.timestamp.iso", Lazy.by(() -> buildCommitDateTime.get().toEpochSecond() > 0
                 ? headCommitDateTime.get().format(DateTimeFormatter.ISO_INSTANT) : "0000-01-01T00:00:00Z"));
 
-        final String refName = gitVersionDetails.getRefName();
+        final String refName = gitVersionDetails.refName();
         final Lazy<String> refNameSlug = Lazy.by(() -> slugify(refName));
         placeholderMap.put("ref", () -> refName);
         placeholderMap.put("ref" + ".slug", refNameSlug);
 
-        final Pattern refPattern = gitVersionDetails.getPatchDescription().pattern();
+        final Pattern refPattern = gitVersionDetails.patchDescription().pattern();
         if (refPattern != null) {
             // ref pattern groups
             for (Entry<String, String> patternGroup : patternGroupValues(refPattern, refName).entrySet()) {
@@ -995,7 +995,7 @@ public class GitVersioningModelProcessor implements ModelProcessor {
         // describe
         final Lazy<GitDescription> description = Lazy.by(gitSituation::getDescription);
         placeholderMap.put("describe", Lazy.by(() -> description.get().toString()));
-        final Lazy<String> descriptionTag = Lazy.by(() -> description.get().getTag());
+        final Lazy<String> descriptionTag = Lazy.by(() -> description.get().tag());
         placeholderMap.put("describe.tag", descriptionTag);
 
         final Lazy<Matcher> descriptionTagVersionMatcher = Lazy.by(() -> matchVersion(descriptionTag.get()));
@@ -1021,7 +1021,7 @@ public class GitVersioningModelProcessor implements ModelProcessor {
 
         placeholderMap.put("describe.tag.version.next", Lazy.by(() -> nextVersion(descriptionTagVersionMatcher.get())));
 
-        final Lazy<Integer> descriptionDistance = Lazy.by(() -> description.get().getDistance());
+        final Lazy<Integer> descriptionDistance = Lazy.by(() -> description.get().distance());
         setDescribeDistancePlaceholders(placeholderMap, descriptionDistance, "distance");
         final Lazy<Integer> descriptionDistanceOrZero = Lazy.by(() -> description.get().getDistanceOrZero());
         setDescribeDistancePlaceholders(placeholderMap, descriptionDistanceOrZero, "distanceOrZero");
@@ -1121,7 +1121,7 @@ public class GitVersioningModelProcessor implements ModelProcessor {
             String plainName = name.replaceFirst("^versioning\\.", "");
             String environmentVariableName = "VERSIONING_"
                     + String.join("_", plainName.split("(?=\\p{Lu})"))
-                    .replaceAll("\\.", "_")
+                    .replace('.', '_')
                     .toUpperCase();
             value = System.getenv(environmentVariableName);
         }

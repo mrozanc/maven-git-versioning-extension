@@ -58,7 +58,7 @@ public class GAV {
 
     @Override
     public String toString() {
-        return String.format("%s:%s:%s", groupId, artifactId, version);
+        return groupId + ":" + artifactId + ":" + version;
     }
 
     public static GAV of(Model model) {

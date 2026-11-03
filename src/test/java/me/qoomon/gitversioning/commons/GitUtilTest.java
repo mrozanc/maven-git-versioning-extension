@@ -230,10 +230,10 @@ class GitUtilTest {
 
         // then
         assertThat(description).satisfies(it -> {
-            assertThat(it.getCommit()).isEqualTo(givenCommit.getName());
-            assertThat(it.getDistance()).isZero();
+            assertThat(it.commit()).isEqualTo(givenCommit.getName());
+            assertThat(it.distance()).isZero();
             assertThat(it.getDistanceOrZero()).isZero();
-            assertThat(it.getTag()).isEqualTo(givenTagName);
+            assertThat(it.tag()).isEqualTo(givenTagName);
         });
     }
 
@@ -246,9 +246,9 @@ class GitUtilTest {
         final var softly = new SoftAssertions();
         for (int i = 0; i < 3; ++i) {
             GitDescription description = GitUtil.describe(head(git), Pattern.compile("v.+"), git.getRepository(), true, -1);
-            softly.assertThat(description.isTagFound()).as("isTagFound " + i).isFalse();
+            softly.assertThat(description.tagFound()).as("isTagFound " + i).isFalse();
             softly.assertThat(description.getDistanceOrZero()).as("distanceOrZero " + i).isZero();
-            softly.assertThat(description.getDistance()).as("distance " + i).isEqualTo(i);
+            softly.assertThat(description.distance()).as("distance " + i).isEqualTo(i);
             git.commit().setMessage("commit " + (i + 1)).setAllowEmpty(true).call();
         }
         softly.assertAll();
@@ -265,9 +265,9 @@ class GitUtilTest {
         final SoftAssertions softly = new SoftAssertions();
         for (int i = 0; i < 6; ++i) {
             GitDescription description = GitUtil.describe(head(git), Pattern.compile("v.+"), git.getRepository(), true, maxDepth);
-            softly.assertThat(description.isTagFound()).as("distanceOrZero " + i).isEqualTo(i <= maxDepth);
+            softly.assertThat(description.tagFound()).as("distanceOrZero " + i).isEqualTo(i <= maxDepth);
             softly.assertThat(description.getDistanceOrZero()).as("distanceOrZero " + i).isEqualTo(i > maxDepth ? 0 : i);
-            softly.assertThat(description.getDistance()).as("distance " + i).isEqualTo(Math.min(i, maxDepth));
+            softly.assertThat(description.distance()).as("distance " + i).isEqualTo(Math.min(i, maxDepth));
             git.commit().setMessage("commit " + (i + 1)).setAllowEmpty(true).call();
         }
         softly.assertAll();
@@ -305,18 +305,18 @@ class GitUtilTest {
 
         // Then
         final SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(description10.getDistance()).as("v1.0.0 distance").isEqualTo(7);
-        softly.assertThat(description10.isTagFound()).as("v1.0.0 tagFound").isTrue();
-        softly.assertThat(description11.getDistance()).as("v1.1.0 distance").isEqualTo(11);
-        softly.assertThat(description11.isTagFound()).as("v1.1.0 tagFound").isTrue();
-        softly.assertThat(description12.getDistance()).as("v1.2.0 distance").isEqualTo(6);
-        softly.assertThat(description12.isTagFound()).as("v1.2.0 tagFound").isTrue();
-        softly.assertThat(description10Depth.getDistance()).as("v1.0.0 distance with depth").isEqualTo(7);
-        softly.assertThat(description10Depth.isTagFound()).as("v1.0.0 tagFound with depth").isTrue();
-        softly.assertThat(description11Depth.getDistance()).as("v1.1.0 distance with depth").isEqualTo(8);
-        softly.assertThat(description11Depth.isTagFound()).as("v1.1.0 tagFound with depth").isFalse();
-        softly.assertThat(description12Depth.getDistance()).as("v1.2.0 distance with depth").isEqualTo(6);
-        softly.assertThat(description12Depth.isTagFound()).as("v1.2.0 tagFound with depth").isTrue();
+        softly.assertThat(description10.distance()).as("v1.0.0 distance").isEqualTo(7);
+        softly.assertThat(description10.tagFound()).as("v1.0.0 tagFound").isTrue();
+        softly.assertThat(description11.distance()).as("v1.1.0 distance").isEqualTo(11);
+        softly.assertThat(description11.tagFound()).as("v1.1.0 tagFound").isTrue();
+        softly.assertThat(description12.distance()).as("v1.2.0 distance").isEqualTo(6);
+        softly.assertThat(description12.tagFound()).as("v1.2.0 tagFound").isTrue();
+        softly.assertThat(description10Depth.distance()).as("v1.0.0 distance with depth").isEqualTo(7);
+        softly.assertThat(description10Depth.tagFound()).as("v1.0.0 tagFound with depth").isTrue();
+        softly.assertThat(description11Depth.distance()).as("v1.1.0 distance with depth").isEqualTo(8);
+        softly.assertThat(description11Depth.tagFound()).as("v1.1.0 tagFound with depth").isFalse();
+        softly.assertThat(description12Depth.distance()).as("v1.2.0 distance with depth").isEqualTo(6);
+        softly.assertThat(description12Depth.tagFound()).as("v1.2.0 tagFound with depth").isTrue();
         softly.assertAll();
     }
 
@@ -352,18 +352,18 @@ class GitUtilTest {
 
         // Then
         final SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(description10.getDistance()).as("v1.0.0 distance").isEqualTo(7);
-        softly.assertThat(description10.isTagFound()).as("v1.0.0 tagFound").isTrue();
-        softly.assertThat(description11.getDistance()).as("v1.1.0 distance").isEqualTo(7);
-        softly.assertThat(description11.isTagFound()).as("v1.1.0 tagFound").isFalse();
-        softly.assertThat(description12.getDistance()).as("v1.2.0 distance").isEqualTo(6);
-        softly.assertThat(description12.isTagFound()).as("v1.2.0 tagFound").isTrue();
-        softly.assertThat(description10Depth.getDistance()).as("v1.0.0 distance with depth").isEqualTo(7);
-        softly.assertThat(description10Depth.isTagFound()).as("v1.0.0 tagFound with depth").isTrue();
-        softly.assertThat(description11Depth.getDistance()).as("v1.1.0 distance with depth").isEqualTo(7);
-        softly.assertThat(description11Depth.isTagFound()).as("v1.1.0 tagFound with depth").isFalse();
-        softly.assertThat(description12Depth.getDistance()).as("v1.2.0 distance with depth").isEqualTo(6);
-        softly.assertThat(description12Depth.isTagFound()).as("v1.2.0 tagFound with depth").isTrue();
+        softly.assertThat(description10.distance()).as("v1.0.0 distance").isEqualTo(7);
+        softly.assertThat(description10.tagFound()).as("v1.0.0 tagFound").isTrue();
+        softly.assertThat(description11.distance()).as("v1.1.0 distance").isEqualTo(7);
+        softly.assertThat(description11.tagFound()).as("v1.1.0 tagFound").isFalse();
+        softly.assertThat(description12.distance()).as("v1.2.0 distance").isEqualTo(6);
+        softly.assertThat(description12.tagFound()).as("v1.2.0 tagFound").isTrue();
+        softly.assertThat(description10Depth.distance()).as("v1.0.0 distance with depth").isEqualTo(7);
+        softly.assertThat(description10Depth.tagFound()).as("v1.0.0 tagFound with depth").isTrue();
+        softly.assertThat(description11Depth.distance()).as("v1.1.0 distance with depth").isEqualTo(7);
+        softly.assertThat(description11Depth.tagFound()).as("v1.1.0 tagFound with depth").isFalse();
+        softly.assertThat(description12Depth.distance()).as("v1.2.0 distance with depth").isEqualTo(6);
+        softly.assertThat(description12Depth.tagFound()).as("v1.2.0 tagFound with depth").isTrue();
         softly.assertAll();
     }
 }

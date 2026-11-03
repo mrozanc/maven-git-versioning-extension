@@ -35,6 +35,9 @@ import static org.eclipse.jgit.lib.Repository.shortenRefName;
 
 public final class GitUtil {
 
+    private GitUtil() {
+    }
+
     public static String NO_COMMIT = "0000000000000000000000000000000000000000";
 
     public static Status status(Repository repository) throws GitAPIException {
@@ -91,8 +94,8 @@ public final class GitUtil {
             while (walkIterator.hasNext()) {
                 RevCommit rev = walkIterator.next();
                 int depth = 0;
-                if (rev instanceof DepthWalk.Commit) {
-                    depth = ((DepthWalk.Commit) rev).getDepth();
+                if (rev instanceof DepthWalk.Commit commit) {
+                    depth = commit.getDepth();
                 }
                 maxVisitedDepth = Math.max(maxVisitedDepth, depth);
                 Optional<String> matchingTag = objectIdListMap.getOrDefault(rev, emptyList()).stream()
@@ -140,7 +143,7 @@ public final class GitUtil {
                         Entry::getKey,
                         e -> e.getValue().stream()
                                 .sorted(tagComparator)
-                                .map(v -> shortenRefName(v.getName())).collect(toList())
+                                .map(v -> shortenRefName(v.getName())).toList()
                 ));
     }
 

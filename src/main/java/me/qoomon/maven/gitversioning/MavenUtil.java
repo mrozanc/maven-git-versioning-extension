@@ -22,6 +22,9 @@ import static java.nio.file.Files.readAllBytes;
  */
 final class MavenUtil {
 
+    private MavenUtil() {
+    }
+
     /**
      * Read model from pom file
      *
@@ -86,8 +89,8 @@ final class MavenUtil {
     }
 
     public static BuildBase getBuild(ModelBase model) {
-        if (model instanceof Profile) {
-            return ((Profile) model).getBuild();
+        if (model instanceof Profile profile) {
+            return profile.getBuild();
         }
         return ((Model) model).getBuild();
     }

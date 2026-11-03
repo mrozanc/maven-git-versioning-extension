@@ -53,14 +53,14 @@ public final class StringUtil {
             }
             Supplier<String> replacementSupplier = replacements.get(placeholderKey);
             String replacement = replacementSupplier != null ? replacementSupplier.get() : null;
-            if (placeholderModifier != null) {
-                if ((placeholderModifier.equals("-") && replacement == null)
+            if (placeholderModifier != null &&
+                    ((placeholderModifier.equals("-") && replacement == null)
                         || (placeholderModifier.equals(":-") && (replacement == null || replacement.isEmpty()))
                         || (placeholderModifier.equals("+") && replacement != null)
-                        || (placeholderModifier.equals(":+") && replacement != null && !replacement.isEmpty())) {
+                        || (placeholderModifier.equals(":+") && replacement != null && !replacement.isEmpty()))) {
                     replacement = placeholderMatcher.group("value").replace("::", ":");
                 }
-            }
+
             String functionNames = placeholderMatcher.group("functions");
             if (functionNames != null) {
                 for (String functionName : functionNames.substring(1).split(":")) {

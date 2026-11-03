@@ -41,7 +41,7 @@
         <it.maven.distributions.dir>${project.build.directory}/it-maven-distributions</it.maven.distributions.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.release>11</maven.compiler.release>
+        <maven.compiler.release>17</maven.compiler.release>
     </properties>
 
 

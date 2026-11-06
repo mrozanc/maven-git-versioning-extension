@@ -1,8 +1,8 @@
-# Maven Git Versioning Extension [![starline](https://raw.githubusercontent.com/qoomon/qoomon/refs/heads/main/starlines/qoomon/maven-git-versioning-extension/starline.svg)](https://github.com/qoomon/starlines)
+# Maven Git Versioning Extension
 
-[![Maven Central](https://img.shields.io/maven-central/v/me.qoomon/maven-git-versioning-extension.svg)](https://search.maven.org/artifact/me.qoomon/maven-git-versioning-extension)
+[![Maven Central](https://img.shields.io/maven-central/v/fr.rozanc.maven/maven-git-versioning-extension.svg)](https://search.maven.org/artifact/fr.rozanc.maven/maven-git-versioning-extension)
 [![Changelog](https://badgen.net/badge/changelog/%E2%98%85/blue)](CHANGELOG.md)
-[![Build Workflow](https://github.com/qoomon/maven-git-versioning-extension/workflows/Build/badge.svg)](https://github.com/qoomon/maven-git-versioning-extension/actions?query=workflow%3ABuild)
+[![Build Workflow](https://github.com/mrozanc/maven-git-versioning-extension/workflows/Build/badge.svg)](https://github.com/mrozanc/maven-git-versioning-extension/actions?query=workflow%3ABuild)
 
 **ℹ Also available as [Gradle Plugin](https://github.com/qoomon/gradle-git-versioning-plugin)**
 
@@ -36,7 +36,7 @@ create or update `${rootProjectDir}/.mvn/extensions.xml` file
             xsi:schemaLocation="http://maven.apache.org/EXTENSIONS/1.0.0 http://maven.apache.org/xsd/core-extensions-1.0.0.xsd">
 
     <extension>
-        <groupId>me.qoomon</groupId>
+        <groupId>fr.rozanc.maven</groupId>
         <artifactId>maven-git-versioning-extension</artifactId>
         <version>9.12.0</version>
     </extension>
@@ -55,9 +55,9 @@ You can configure the version and properties adjustments for specific branches a
 **Example:** `maven-git-versioning-extension.xml`
 
 ```xml
-<configuration xmlns="https://github.com/qoomon/maven-git-versioning-extension"
+<configuration xmlns="https://github.com/mrozanc/maven-git-versioning-extension"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xsi:schemaLocation="https://github.com/qoomon/maven-git-versioning-extension https://qoomon.github.io/maven-git-versioning-extension/configuration-9.12.3.xsd">
+               xsi:schemaLocation="https://github.com/mrozanc/maven-git-versioning-extension https://mrozanc.github.io/maven-git-versioning-extension/configuration-9.12.3.xsd">
 
     <refs>
         <ref type="branch">
@@ -165,7 +165,7 @@ You can configure the version and properties adjustments for specific branches a
    ```xml
    <relatedProjects>
        <project>
-           <groupId>me.qoomon</groupId>
+           <groupId>fr.rozanc.maven</groupId>
            <artifactId>base</artifactId>
        </project>
    </relatedProjects>
@@ -473,5 +473,5 @@ gpg --list-keys
 ##### Debug
 
 ```shell
-mvn help:evaluate -Dexpression=project.version -Dorg.slf4j.simpleLogger.log.me.qoomon.maven.gitversioning=debug
+mvn help:evaluate -Dexpression=project.version -Dorg.slf4j.simpleLogger.log.fr.rozanc.maven.maven.gitversioning=debug
 ```

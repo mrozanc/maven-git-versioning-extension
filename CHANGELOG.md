@@ -1,6 +1,6 @@
 # Maven Git Versioning Extension Changelog
 
-[![Maven Central](https://img.shields.io/maven-central/v/me.qoomon/maven-git-versioning-extension.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22me.qoomon%22%20AND%20a%3A%22maven-git-versioning-extension%22)
+[![Maven Central](https://img.shields.io/maven-central/v/fr.rozanc.maven/maven-git-versioning-extension.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22fr.rozanc.maven%22%20AND%20a%3A%22maven-git-versioning-extension%22)
 
 # Changelog
 
@@ -260,8 +260,8 @@ Fixes [#412](https://github.com/qoomon/maven-git-versioning-extension/issues/412
 
     **Example:** `maven-git-versioning-extension.xml`
     ```xml
-    <configuration xmlns="https://github.com/qoomon/maven-git-versioning-extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="https://github.com/qoomon/maven-git-versioning-extension https://qoomon.github.io/maven-git-versioning-extension/configuration-7.0.0.xsd">
+    <configuration xmlns="https://github.com/mrozanc/maven-git-versioning-extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://github.com/mrozanc/maven-git-versioning-extension https://mrozanc.github.io/maven-git-versioning-extension/configuration-7.0.0.xsd">
     
         <refs>
             <ref type="branch">

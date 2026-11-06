@@ -9,3 +9,7 @@ target/
 .*-pom.xml
 
 pom.xml.versionsBackup
+
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar

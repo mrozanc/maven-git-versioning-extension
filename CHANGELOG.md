@@ -4,6 +4,12 @@
 
 # Changelog
 
+## Unreleased
+
+##### Changes
+- Build migrated from Maven to Gradle 9.8.2 and split into `git-versioning-core`, `git-versioning-maven-extension` (new artifactId, was `maven-git-versioning-extension`) and an empty `git-versioning-gradle-plugin`.
+- Tag ordering now uses an embedded copy of Maven 3.10.0's `ComparableVersion` instead of the host Maven's implementation.
+
 ## 9.12.0
 
 ##### Features

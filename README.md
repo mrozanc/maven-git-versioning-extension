@@ -1,6 +1,6 @@
 # Maven Git Versioning Extension
 
-[![Maven Central](https://img.shields.io/maven-central/v/fr.rozanc.maven/maven-git-versioning-extension.svg)](https://search.maven.org/artifact/fr.rozanc.maven/maven-git-versioning-extension)
+[![Maven Central](https://img.shields.io/maven-central/v/fr.rozanc.maven/git-versioning-maven-extension.svg)](https://search.maven.org/artifact/fr.rozanc.maven/git-versioning-maven-extension)
 [![Changelog](https://badgen.net/badge/changelog/%E2%98%85/blue)](CHANGELOG.md)
 [![Build Workflow](https://github.com/mrozanc/maven-git-versioning-extension/workflows/Build/badge.svg)](https://github.com/mrozanc/maven-git-versioning-extension/actions?query=workflow%3ABuild)
 
@@ -37,7 +37,7 @@ create or update `${rootProjectDir}/.mvn/extensions.xml` file
 
     <extension>
         <groupId>fr.rozanc.maven</groupId>
-        <artifactId>maven-git-versioning-extension</artifactId>
+        <artifactId>git-versioning-maven-extension</artifactId>
         <version>9.12.0</version>
     </extension>
 
@@ -460,14 +460,13 @@ gpg --list-keys
 ```
 
 ```shell
-  mvn verify
-  # Publishes this plugin to local Maven
-  mvn install
-  # Run integration tests after install, 
-  # integration tests will run with LATEST version of extension installed
-  mvn failsafe:integration-test
-  # Publishes this plugin to OSS Nexus.
-  GPG_TTY=$(tty) mvn clean deploy -P release -Dgpg.keyname=???
+  ./gradlew build
+  # Publishes the modules to local Maven
+  ./gradlew publishToMavenLocal
+  # Run integration tests (publishes to local Maven first)
+  ./gradlew integrationTest
+  # Publishes signed artifacts to a release repository
+  ./gradlew publish -Prelease -PreleaseRepositoryUrl=??? -Psigning.gnupg.keyName=???
 ```
 
 ##### Debug
